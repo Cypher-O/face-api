@@ -15,7 +15,31 @@ const initializeFaceApi = async () => {
   console.log('Face-api models loaded successfully');
 };
 
-const detectFaces = asyncHandler(async (req, res) => {
+
+// const initializeFaceApi = async () => {
+//   try {
+//     console.log('Starting to load face-api models...');
+    
+//     console.log('Loading face recognition model...');
+//     await faceapi.nets.faceRecognitionNet.loadFromDisk('./models');
+//     console.log('Face recognition model loaded successfully');
+    
+//     console.log('Loading face landmark model...');
+//     await faceapi.nets.faceLandmark68Net.loadFromDisk('./models');
+//     console.log('Face landmark model loaded successfully');
+    
+//     console.log('Loading SSD MobileNet model...');
+//     await faceapi.nets.ssdMobilenetv1.loadFromDisk('./models');
+//     console.log('SSD MobileNet model loaded successfully');
+    
+//     console.log('All face-api models loaded successfully');
+//   } catch (error) {
+//     console.error('Error loading face-api models:', error);
+//     throw error;  // Re-throw the error to be caught by the caller
+//   }
+// };
+
+const detectFaces = (supabase) => asyncHandler(async (req, res) => {
   const { imageUrl } = req.body;
   if (!imageUrl) {
     return res.status(400).json({ code: 1, status: 'error', message: 'Image URL is required' });
@@ -36,7 +60,7 @@ const detectFaces = asyncHandler(async (req, res) => {
   }
 });
 
-const recognizeFaces = asyncHandler(async (req, res) => {
+const recognizeFaces = (supabase) => asyncHandler(async (req, res) => {
   const { imageUrl } = req.body;
   if (!imageUrl) {
     return res.status(400).json({ code: 1, status: 'error', message: 'Image URL is required' });
@@ -57,7 +81,7 @@ const recognizeFaces = asyncHandler(async (req, res) => {
   }
 });
 
-const matchFaces = asyncHandler(async (req, res) => {
+const matchFaces = (supabase) => asyncHandler(async (req, res) => {
   const { imageUrl1, imageUrl2 } = req.body;
   if (!imageUrl1 || !imageUrl2) {
     return res.status(400).json({ code: 1, status: 'error', message: 'Both image URLs are required' });
