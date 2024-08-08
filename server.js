@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 var cors = require('cors');
 const faceRecognitionRoutes = require('./routes/index');
+const realTimeFaceRecognitionRoutes = require('./routes/realTimeFaceRecognitionRoute');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
 const loggingMiddleware = require('./middleware/loggingMiddleware');
@@ -17,7 +18,8 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 //Routes
-app.use('/api/auth', faceRecognitionRoutes);
+app.use('/api/auth', [faceRecognitionRoutes, realTimeFaceRecognitionRoutes]);
+// app.use('/api/auth', realTimeFaceRecognitionRoutes);
 
 // Error handling middleware
 app.use(notFound);

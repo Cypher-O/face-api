@@ -10,7 +10,7 @@
     "migrate:create": "node-pg-migrate create",
     "build-css": "sass --no-source-map views/404/css/styles.scss public/styles.css && sass --no-source-map views/500/css/styles.scss public/500styles.css",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && npm run build-css",
+    "build": "npm install && npm run migrate:up && npm run build-css",
     "serve": "node server.js",
     "dev": "nodemon server.js"
   },

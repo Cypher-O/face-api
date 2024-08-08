@@ -39,6 +39,7 @@ const initializeFaceApi = async () => {
 //   }
 // };
 
+
 const detectFaces = (supabase) => asyncHandler(async (req, res) => {
   const { imageUrl } = req.body;
   if (!imageUrl) {
@@ -48,12 +49,21 @@ const detectFaces = (supabase) => asyncHandler(async (req, res) => {
   try {
     const img = await canvas.loadImage(imageUrl);
     const detections = await faceapi.detectAllFaces(img).withFaceLandmarks();
-    res.json({
-      code: 0,
-      status: 'success',
-      message: 'Faces detected successfully',
-      data: detections
-    });
+    if (detections.length > 0) {
+      res.json({
+        code: 0,
+        status: 'success',
+        message: 'Faces detected successfully',
+        data: detections
+      });
+    } else {
+      res.json({
+        code: 1,
+        status: 'error',
+        message: 'No faces detected',
+        data: []
+      });
+    }
   } catch (error) {
     console.error('Face detection error:', error);
     res.status(500).json({ code: 1, status: 'error', message: 'Face detection failed', error: error.message });
@@ -69,12 +79,21 @@ const recognizeFaces = (supabase) => asyncHandler(async (req, res) => {
   try {
     const img = await canvas.loadImage(imageUrl);
     const fullFaceDescriptions = await faceapi.detectAllFaces(img).withFaceLandmarks().withFaceDescriptors();
-    res.json({
-      code: 0,
-      status: 'success',
-      message: 'Faces recognized successfully',
-      data: fullFaceDescriptions
-    });
+    if (fullFaceDescriptions.length > 0) {
+      res.json({
+        code: 0,
+        status: 'success',
+        message: 'Faces recognized successfully',
+        data: fullFaceDescriptions
+      });
+    } else {
+      res.json({
+        code: 1,
+        status: 'error',
+        message: 'No faces recognized',
+        data: []
+      });
+    }
   } catch (error) {
     console.error('Face recognition error:', error);
     res.status(500).json({ code: 1, status: 'error', message: 'Face recognition failed', error: error.message });
